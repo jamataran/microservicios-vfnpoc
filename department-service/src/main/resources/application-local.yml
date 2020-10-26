@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: department
+  data:
+    mongodb:
+      uri: mongodb://piotr:123456@10.98.85.204:27017/microservices
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
