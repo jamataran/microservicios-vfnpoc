@@ -11,6 +11,8 @@ En este ejemplo existen tres aplicaciones:
 * Servicio de organización (llama a servicio de empleados)
 * Servicio de departamentos (llama a servicio de empleados) 
 
+![Esquema](/readme-sources/diagram.png?raw=true "Esquema aplicación")
+
 ### Pasos para la configuración.
 Aplicar en nuestro motor k8s de pruebas
 1. 
@@ -22,7 +24,10 @@ El primero de los retos que se plantean, las diferentes configuraciones que depe
 * Para que los servicios puedan encontrar otros servicios dentro del orquestador es necesario utilizar un servicio de descubrimiento. 
 Para el stack Spring & K8S utilizaremos [`spring-cloud-kubernetes-ribbon`](https://cloud.spring.io/spring-cloud-static/spring-cloud-kubernetes/2.1.0.RC1/multi/multi__ribbon_discovery_in_kubernetes.html)
 
-* Para consumir otros clientes dentro de la red utilizaremos [Spring Cloud OpenFign](https://spring.io/projects/spring-cloud-openfeign) 
+* Para consumir otros clientes dentro de la red utilizaremos [Spring Cloud OpenFign](https://spring.io/projects/spring-cloud-openfeign)
+
+### Trazabilidad
+Para aumentar la trazabilidad de los servicios,  
 
 
 ## Comandos útiles
