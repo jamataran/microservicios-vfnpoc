@@ -1,8 +1,18 @@
-# Microservicios
+# Microservicios & Spring
 
+## Spring Boot & Kubernetes. Retos.
 
-## Spring Boot & Kubernetes
-Para afrontar los retos que suponen los microservicios existen soluciones tanto en la suite Spring Cloud como en Kubernetes.
+Migrar una aplicación monolítica a una arquitectura de microservicios tiene una serie de retos, que se deben abordar. Estos retos están muchas veces
+presentes en las aplicaciones monolíticas y otros nacen de la nueva filosofía de orquestación de contenedores en entornos cloud. 
+
+Desde el comienzo de la explosión del mundo de los microservicios, Spring ha crecido abordando los nuevos retos dentro del paquete Spring Cloud Netflix, si bien es cierto que no tiene
+mucho sentido utilizar microservicios sin una plataforma de orquestación y las más populares (Kubernetes y OpenShift) ya implementan soluciones para los problemas cloud lo que hacen 
+que muchas de las soluciones del paquete Spring Cloud no sean necesarias. 
+
+Conscientes de esto, la gente de Spring ha creado [Spring Cloud Kubernetes](https://spring.io/projects/spring-cloud-kubernetes#learn) que nos permite delegar en PaaS elegida muchas de las 
+funcionalidades requeridas cuando tratamos de orquestar servicios en la nube.
+
+Este repositorio contiene un pequeño ejemplo de como desplegar una pequeña aplicación de registro de empleados basandonos en esta arquitectura.s
 
 ## Proyecto Ejemplo
 En este repositorio tenemos unos servicios de ejemplo, cortesía de [Piotr Mińkowski](https://github.com/piomin/sample-spring-microservices-new) que nos valen para ilustar una arquitectura de Microservicios basada en el ecosistema Spring y Kubernetes.
@@ -29,21 +39,28 @@ Aplicar en nuestro motor k8s de pruebas
     1.3 Aplicar con `kubectl` los ficheros que tenemos en la carpeta `k8s` (orden)
     
     
-## Retos de los microservicios
-
-Migrar una aplicación monolítica a una arquitectura de microservicios tiene una serie de retos, que se deben abordar
-        
 ### Configuración de entorno
 El primero de los retos que se plantean, las diferentes configuraciones que dependan de un entorno, se pueden solucionar utilizando los [`ConfigMaps`](https://kubernetes.io/es/docs/concepts/configuration/configmap/) y los [`Secrets`](https://kubernetes.io/docs/concepts/configuration/secret/)
+Una vez configurados `ConfigMaps` y `Secrets`; es necesario que Spring los consuma. Para ello utilizamos [Spring Cloud Kubernetes](https://spring.io/projects/spring-cloud-kubernetes#learn) que nos permite la carga dinámica de [`PropertySource`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html) desde estos componentes de Kubernetes.
 
 ### Descubrimiento y comunicación entre microservicios
-* Para que los servicios puedan encontrar otros servicios dentro del orquestador es necesario utilizar un servicio de descubrimiento. 
-Para el stack Spring & K8S utilizaremos [`spring-cloud-kubernetes-ribbon`](https://cloud.spring.io/spring-cloud-static/spring-cloud-kubernetes/2.1.0.RC1/multi/multi__ribbon_discovery_in_kubernetes.html)
+* Para que los servicios puedan encontrar otros servicios dentro del orquestador es necesario utilizar un servicio de descubrimiento. Para el stack Spring & K8S utilizaremos [`spring-cloud-kubernetes-ribbon`](https://cloud.spring.io/spring-cloud-static/spring-cloud-kubernetes/2.1.0.RC1/multi/multi__ribbon_discovery_in_kubernetes.html)
+    * Ribbon es una librería que permite encontrar otros servicios. En nuestro caso, es capaz de detectar donde estan nuestros microservicios.
+    * Ribbon ofrece balancedo de carga en el lado de cliente.
+    * Ribbon detecta que servicios están caídos y cuales no.
+
 
 * Para consumir otros clientes dentro de la red utilizaremos [Spring Cloud OpenFign](https://spring.io/projects/spring-cloud-openfeign)
 
+### Documentación
+Un punto importante es tener bien documentado todo nuestro ecosistema de microservicios. Todos estamos ya familiarizados con el uso de Swagger y OpenApi pero aquí el reto es otro: tener un 
+punto centralizado con nuestra documentación.
+
+### Tolerancia a fallos y resiliencia.
+TODO Hystryx +  Actuator
+
 ### Trazabilidad
-Para aumentar la trazabilidad de los servicios, utilizamos...
+TODO Sleuth
 
 
 ## Comandos útiles & Recetas Kubernetes
@@ -75,3 +92,6 @@ Para aumentar la trazabilidad de los servicios, utilizamos...
 * [https://spring.io/projects/spring-cloud-openfeign](https://spring.io/projects/spring-cloud-openfeign)
 * [https://matthewpalmer.net/kubernetes-app-developer/articles/service-kubernetes-example-tutorial.html#:~:text=What's%20the%20difference%20between%20a,running%20in%20the%20Kubernetes%20cluster.](https://matthewpalmer.net/kubernetes-app-developer/articles/service-kubernetes-example-tutorial.html#:~:text=What's%20the%20difference%20between%20a,running%20in%20the%20Kubernetes%20cluster.)
 * [https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0](https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0)
+* [https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/](https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/)
+* [https://www.baeldung.com/spring-cloud-kubernetes](https://www.baeldung.com/spring-cloud-kubernetes)
+* [https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/](https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/)
