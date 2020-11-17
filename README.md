@@ -37,7 +37,22 @@ Aplicar en nuestro motor k8s de pruebas
     ```
     
     1.3 Aplicar con `kubectl` los ficheros que tenemos en la carpeta `k8s` (orden)
-    
+ 
+## Retos conseguidos.
+
+Como se comentaba, existen varios retos cuando utilizamos arquitecturas cloud. Cada día aparecen nuevas formas de solucionar estos problemas, 
+aquí vamos a comentar algunos de los que nos podemos encontrar en una aplicación sencilla y como solucionarlos de forma también sencilla. Obviamente
+no es la única forma y tal vez en el momento de consulta está forma ya esté obsoleta, pero puede servir como base para la investigación de 
+nuevas formas. 
+
+### Tráfico
+
+Uno de los primeros retos que nos encontramos es cómo orquestaremos el tráfico de nuestra aplicación. Aplicaciones empresariales suelen utilizar
+ApiGateways y herramientas de la nueva corriente que se ha denominado *Service Mesh*. Estas quedan fuera del alcande de nuestro mini-tutorial, en el que
+"simplemente" usaremos el Ingress que la gente de ngix ha desarrollado para Kubernetes (que no debe ser despreciado, es una solución muy potente)
+
+En la bibliografía existen otras soluciones que pueden mejorar esto.
+   
     
 ### Configuración de entorno
 El primero de los retos que se plantean, las diferentes configuraciones que dependan de un entorno, se pueden solucionar utilizando los [`ConfigMaps`](https://kubernetes.io/es/docs/concepts/configuration/configmap/) y los [`Secrets`](https://kubernetes.io/docs/concepts/configuration/secret/)
@@ -55,6 +70,12 @@ Una vez configurados `ConfigMaps` y `Secrets`; es necesario que Spring los consu
 ### Documentación
 Un punto importante es tener bien documentado todo nuestro ecosistema de microservicios. Todos estamos ya familiarizados con el uso de Swagger y OpenApi pero aquí el reto es otro: tener un 
 punto centralizado con nuestra documentación.
+
+En nuestro caso se ha creado una aplicación auxiliar, `documentation-service`, que _indexará_ todas las definiciones de los microservicios en un único punto, que
+podrá ser accedido. Este servicio es opcional, podemos prescindir de él y acceder a la definición que presenta cada uno de los microservicios por sepado. 
+
+Aunque existen mecanismos para detectar automáticamente los microservicios desplegados, la solucion elegida pasa por dar de alta cada uno de los microservicios
+en la aplicación de documentación, este paso puede abordarse cada vez que un nuevo microservicio es añadidoa la arquitectura.  
 
 ### Tolerancia a fallos y resiliencia.
 TODO Hystryx +  Actuator
@@ -85,7 +106,8 @@ TODO Sleuth
     
 * Nodeport en minikube: `minikube tunnel` 
 
-## Documentación
+## Bibliografía
+
 * [https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin](https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin)
 * [https://github.com/spring-cloud/spring-cloud-kubernetes](https://github.com/spring-cloud/spring-cloud-kubernetes)
 * [https://www.baeldung.com/spring-cloud-openfeign](https://www.baeldung.com/spring-cloud-openfeign)
@@ -95,3 +117,4 @@ TODO Sleuth
 * [https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/](https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/)
 * [https://www.baeldung.com/spring-cloud-kubernetes](https://www.baeldung.com/spring-cloud-kubernetes)
 * [https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/](https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/)
+* [https://learnk8s.io/kubernetes-ingress-api-gateway](https://learnk8s.io/kubernetes-ingress-api-gateway)

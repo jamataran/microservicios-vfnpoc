@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import pl.piomin.services.employee.repository.EmployeeRepository;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -36,6 +39,21 @@ public class EmployeeApplication {
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(new ApiInfoBuilder().version("1.0").title("Employee API").description("Documentation Employee API v1.0").build());
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        // Allow anyone and anything access. Probably ok for Swagger spec
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+
+        source.registerCorsConfiguration("/v2/api-docs", config);
+        return new CorsFilter(source);
     }
 
 }

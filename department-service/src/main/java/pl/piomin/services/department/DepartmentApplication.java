@@ -6,6 +6,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -34,6 +37,21 @@ public class DepartmentApplication {
 				.paths(PathSelectors.any())
 				.build()
 				.apiInfo(new ApiInfoBuilder().version("1.0").title("Department API").description("Documentation Department API v1.0").build());
+	}
+
+	@Bean
+	public CorsFilter corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+		// Allow anyone and anything access. Probably ok for Swagger spec
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedOrigin("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+
+		source.registerCorsConfiguration("/v2/api-docs", config);
+		return new CorsFilter(source);
 	}
 
 //	@Bean

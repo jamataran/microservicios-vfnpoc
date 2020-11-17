@@ -1,0 +1,8 @@
+info:
+  component: Default Single Swagger Document Server for microservices
+
+spring:
+  profiles: default
+
+server:
+  port: 8080

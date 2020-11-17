@@ -5,7 +5,7 @@
       <driver-ref>mongo</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
-      <jdbc-url>mongodb://10.98.85.204:27017</jdbc-url>
+      <jdbc-url>mongodb://10.107.54.117:27017</jdbc-url>
     </data-source>
   </component>
 </project>

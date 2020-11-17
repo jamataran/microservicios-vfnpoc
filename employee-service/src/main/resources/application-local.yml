@@ -3,7 +3,11 @@ spring:
     name: department
   data:
     mongodb:
-      uri: mongodb://piotr:123456@10.98.85.204:27017/microservices
+      host: localhost
+      database: microservices
+      username: piotr
+      password: 123456
+      authentication-database: admin
 
 logging:
   pattern:
