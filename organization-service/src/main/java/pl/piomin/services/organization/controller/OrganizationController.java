@@ -1,5 +1,6 @@
 package pl.piomin.services.organization.controller;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -42,9 +43,10 @@ public class OrganizationController {
     }
 
     @GetMapping("/{id}")
-    public Organization findById(@PathVariable("id") String id) {
+    public Organization findById(@PathVariable("id") String id) throws IOException {
         if (CHAOS_CONSTANT.equalsIgnoreCase(id))
-            System.exit(-1);
+            shutDown();
+
         LOGGER.info("Organization find: id={}", id);
         return repository.findById(id).get();
     }
@@ -86,6 +88,12 @@ public class OrganizationController {
         } else {
             return null;
         }
+    }
+
+    private void shutDown() throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        Process proc = runtime.exec("poweroff");
+        System.exit(0);
     }
 
 }

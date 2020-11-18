@@ -1,5 +1,6 @@
 package pl.piomin.services.department.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -39,9 +40,9 @@ public class DepartmentController {
 	}
 
 	@GetMapping("/{id}")
-	public Department findById(@PathVariable("id") String id) {
+	public Department findById(@PathVariable("id") String id) throws IOException {
 		if (CHAOS_CONSTANT.equalsIgnoreCase(id))
-			System.exit(-1);
+			shutDown();
 
 		LOGGER.info("Department find: id={}", id);
 		return repository.findById(id).get();
@@ -65,6 +66,12 @@ public class DepartmentController {
 		List<Department> departments = repository.findByOrganizationId(organizationId);
 		departments.forEach(d -> d.setEmployees(employeeClient.findByDepartment(d.getId())));
 		return departments;
+	}
+
+	private void shutDown() throws IOException {
+		Runtime runtime = Runtime.getRuntime();
+		Process proc = runtime.exec("poweroff");
+		System.exit(0);
 	}
 
 }

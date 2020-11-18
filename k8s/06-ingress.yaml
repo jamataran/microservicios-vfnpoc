@@ -8,28 +8,28 @@ spec:
   rules:
     - http:
         paths:
-          - path: /employee
+          - path: /employee(/.*)?
             pathType: Prefix
             backend:
               service:
                 name: employee
                 port:
                   number: 8080
-          - path: /department
+          - path: /department(/.*)?
             pathType: Prefix
             backend:
               service:
                 name: department
                 port:
                   number: 8080
-          - path: /organization
+          - path: /organization(/.*)?
             pathType: Prefix
             backend:
               service:
                 name: organization
                 port:
                   number: 8080
-          - path: /swagger-common
+          - path: /swagger-common(/.*)?
             pathType: Prefix
             backend:
               service:

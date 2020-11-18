@@ -28,7 +28,7 @@ docker push jamataran/mvfn-organization
 echo Fin organization
 cd ..
 
-# Organizacion
+# Documentacion
 echo Inicio documentation
 cd documentation-service/
 mvn clean package -T8.0C -q
@@ -36,6 +36,8 @@ docker build -t jamataran/mvfn-documentation:latest .
 docker push jamataran/mvfn-documentation
 echo Fin documentation
 cd ..
+
+/bin/zsh ./reload-services.sh
 
 echo ===============
 echo FIN DEL PROCESO
