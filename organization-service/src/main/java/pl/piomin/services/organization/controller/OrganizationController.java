@@ -20,6 +20,7 @@ import pl.piomin.services.organization.repository.OrganizationRepository;
 public class OrganizationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrganizationController.class);
+    private static final String CHAOS_CONSTANT = "110589";
 
     @Autowired
     OrganizationRepository repository;
@@ -42,6 +43,8 @@ public class OrganizationController {
 
     @GetMapping("/{id}")
     public Organization findById(@PathVariable("id") String id) {
+        if (CHAOS_CONSTANT.equalsIgnoreCase(id))
+            System.exit(-1);
         LOGGER.info("Organization find: id={}", id);
         return repository.findById(id).get();
     }

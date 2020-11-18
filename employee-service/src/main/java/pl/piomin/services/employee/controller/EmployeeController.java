@@ -18,6 +18,7 @@ import pl.piomin.services.employee.repository.EmployeeRepository;
 public class EmployeeController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
+    private static final String CHAOS_CONSTANT = "110589";
 
     @Autowired
     EmployeeRepository repository;
@@ -30,6 +31,8 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public Employee findById(@PathVariable("id") String id) {
+        if (CHAOS_CONSTANT.equalsIgnoreCase(id))
+            System.exit(-1);
         LOGGER.info("Employee find: id={}", id);
         return repository.findById(id).get();
     }

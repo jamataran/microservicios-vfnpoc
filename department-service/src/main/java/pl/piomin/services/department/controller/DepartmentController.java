@@ -20,6 +20,7 @@ import pl.piomin.services.department.repository.DepartmentRepository;
 public class DepartmentController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
+	private static final String CHAOS_CONSTANT = "110589";
 
 	@Autowired
 	DepartmentRepository repository;
@@ -39,6 +40,9 @@ public class DepartmentController {
 
 	@GetMapping("/{id}")
 	public Department findById(@PathVariable("id") String id) {
+		if (CHAOS_CONSTANT.equalsIgnoreCase(id))
+			System.exit(-1);
+
 		LOGGER.info("Department find: id={}", id);
 		return repository.findById(id).get();
 	}

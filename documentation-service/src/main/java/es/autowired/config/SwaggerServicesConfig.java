@@ -1,5 +1,6 @@
 package es.autowired.config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,6 +15,10 @@ import org.springframework.context.annotation.Primary;
 public class SwaggerServicesConfig {
 
     List<SwaggerServices> swagger;
+
+    public SwaggerServicesConfig(List<SwaggerServices> swagger) {
+        this.swagger = new ArrayList<>();
+    }
 
     public List<SwaggerServices> getServices() {
         return swagger;

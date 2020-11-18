@@ -1,0 +1,328 @@
+{
+  "info": {
+    "_postman_id": "a164972a-902e-4ec0-b629-e2aeeb7ed259",
+    "name": "microservicios-vfnpoc",
+    "description": "Peticiones tipo para el entorno",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "organization",
+      "item": [
+        {
+          "name": "add",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"Empresa Pruebas {{$randomInt}}\",\n    \"address\": \"Calle María de Portugal, nº {{$randomInt}}. 28032. Madrid\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{lb_host}}/organization",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findAll",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{lb_host}}/organization",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{lb_host}}/organization/5fb4e9462af56e0f965720db",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "organization",
+                "5fb4e9462af56e0f965720db"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "💣DOWN",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{lb_host}}/organization/110589",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "organization",
+                "110589"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "employee",
+      "item": [
+        {
+          "name": "add",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Luis Mateos Díaz {{$randomInt}}\",\n    \"age\": 46,\n    \"position\": \"IT Consultant\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{lb_host}}/employee/",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "employee",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findById",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"organizationId\": \"5fb4e1d02af56e0f965720da\",\n    \"name\": \"Luis Fernández Díaz\",\n    \"age\": 46,\n    \"position\": \"IT Consultant\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{lb_host}}/employee/11",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "employee",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findAll",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{lb_host}}/employee",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "employee"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "💣 DOWN",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"organizationId\": \"5fb4e1d02af56e0f965720da\",\n    \"name\": \"Luis Fernández Díaz\",\n    \"age\": 46,\n    \"position\": \"IT Consultant\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{lb_host}}/employee/110589",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "employee",
+                "110589"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "department",
+      "item": [
+        {
+          "name": "add",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"organizationId\": \"5fb4e11b2af56e0f965720d9\",\n    \"name\": \"Departamento 1\",\n    \"employees\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{lb_host}}/department/",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "department",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findById",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"organizationId\":\"5fb4e11b2af56e0f965720d9\",\n    \"name\": \"Departamento 1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{lb_host}}/department/1105",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "department",
+                "1105"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "💣DOWN",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"organizationId\":\"5fb4e11b2af56e0f965720d9\",\n    \"name\": \"Departamento 1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{lb_host}}/department/110589",
+              "host": [
+                "{{lb_host}}"
+              ],
+              "path": [
+                "department",
+                "110589"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "6458a4ce-b68a-49c1-b7a4-e0663099373b",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "6d593be1-ecaf-441b-b647-004530935021",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "71934688-da7c-46d3-a29d-4ade2446c5b0",
+      "key": "lb_host",
+      "value": "http://192.168.64.3"
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

@@ -29,3 +29,10 @@ spec:
                 name: organization
                 port:
                   number: 8080
+          - path: /swagger-common
+            pathType: Prefix
+            backend:
+              service:
+                name: documentation
+                port:
+                  number: 8080

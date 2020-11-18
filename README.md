@@ -75,13 +75,20 @@ En nuestro caso se ha creado una aplicación auxiliar, `documentation-service`, 
 podrá ser accedido. Este servicio es opcional, podemos prescindir de él y acceder a la definición que presenta cada uno de los microservicios por sepado. 
 
 Aunque existen mecanismos para detectar automáticamente los microservicios desplegados, la solucion elegida pasa por dar de alta cada uno de los microservicios
-en la aplicación de documentación, este paso puede abordarse cada vez que un nuevo microservicio es añadidoa la arquitectura.  
+en la aplicación de documentación, este paso puede abordarse cada vez que un nuevo microservicio es añadidoa la arquitectura.
+
+Antes de desplegar la aplicación, es necesario crear la configuración a partir del fichero `documentation-service/services.yml`, para ello:
+```shell script
+kubectl create configmap documentation-config -n microservicios-vfnpoc --from-file=documentation-service/src/main/resources/services.yml
+```  
+
+### Trazabilidad distrubida.
+Uno de los retos de todo sistema distribuido es la trazabilidad de las peticiones y operaciones que se soliciten a nuestro sistema.
 
 ### Tolerancia a fallos y resiliencia.
 TODO Hystryx +  Actuator
 
-### Trazabilidad
-TODO Sleuth
+
 
 
 ## Comandos útiles & Recetas Kubernetes
@@ -106,6 +113,8 @@ TODO Sleuth
     
 * Nodeport en minikube: `minikube tunnel` 
 
+* Crear `ConfigMap` desde fichero: `kubectl create configmap {nombre} -n {namespace} --from-file={file}.yml`
+
 ## Bibliografía
 
 * [https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin](https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin)
@@ -118,3 +127,6 @@ TODO Sleuth
 * [https://www.baeldung.com/spring-cloud-kubernetes](https://www.baeldung.com/spring-cloud-kubernetes)
 * [https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/](https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/)
 * [https://learnk8s.io/kubernetes-ingress-api-gateway](https://learnk8s.io/kubernetes-ingress-api-gateway)
+* [https://developers.redhat.com/blog/2017/10/03/configuring-spring-boot-kubernetes-configmap/](https://developers.redhat.com/blog/2017/10/03/configuring-spring-boot-kubernetes-configmap/)
+* [https://github.com/varghgeorge/microservices-single-swagger](https://github.com/varghgeorge/microservices-single-swagger)
+* [https://walkingtreetech.medium.com/logs-monitoring-in-microservices-using-elk-316bf9c049c4](https://walkingtreetech.medium.com/logs-monitoring-in-microservices-using-elk-316bf9c049c4)
