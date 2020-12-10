@@ -51,8 +51,7 @@ Uno de los primeros retos que nos encontramos es cómo orquestaremos el tráfico
 ApiGateways y herramientas de la nueva corriente que se ha denominado *Service Mesh*. Estas quedan fuera del alcande de nuestro mini-tutorial, en el que
 "simplemente" usaremos el Ingress que la gente de ngix ha desarrollado para Kubernetes (que no debe ser despreciado, es una solución muy potente)
 
-En la bibliografía existen otras soluciones que pueden mejorar esto.
-   
+En la bibliografía existen otras soluciones que pueden mejorar esto.   
     
 ### Configuración de entorno
 El primero de los retos que se plantean, las diferentes configuraciones que dependan de un entorno, se pueden solucionar utilizando los [`ConfigMaps`](https://kubernetes.io/es/docs/concepts/configuration/configmap/) y los [`Secrets`](https://kubernetes.io/docs/concepts/configuration/secret/)
@@ -65,7 +64,7 @@ Una vez configurados `ConfigMaps` y `Secrets`; es necesario que Spring los consu
     * Ribbon detecta que servicios están caídos y cuales no.
 
 
-* Para consumir otros clientes dentro de la red utilizaremos [Spring Cloud OpenFign](https://spring.io/projects/spring-cloud-openfeign)
+* Para consumir otros clientes dentro de la red utilizaremos [Spring Cloud OpenFeign](https://spring.io/projects/spring-cloud-openfeign)
 
 ### Documentación
 Un punto importante es tener bien documentado todo nuestro ecosistema de microservicios. Todos estamos ya familiarizados con el uso de Swagger y OpenApi pero aquí el reto es otro: tener un 
@@ -83,12 +82,29 @@ kubectl create configmap documentation-config -n microservicios-vfnpoc --from-fi
 ```  
 
 ### Trazabilidad distrubida.
-Uno de los retos de todo sistema distribuido es la trazabilidad de las peticiones y operaciones que se soliciten a nuestro sistema.
+Uno de los retos de todo sistema distribuido es la trazabilidad de las peticiones y operaciones que se soliciten a nuestro sistema. Con los microservicios, tenemos varios retos que debemos 
+afrontar para poder explotar nuestros servicios con seguridad, detectar errores y optimizar procesos:
+    
+El primero de ellos es tener identificada cada petición, pues desencadenará una serie de peticiones internas. Para ello utilizamos [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth),
+que añadirá una serie de campos para trazas las peticiones. Sólo con incluir su depencencia añadirá en los headers una serie de anotaciones que se detallan 
+a continuación. Estas peticiones se propagaran de forma automática entre los sistemas que intervengan en nuestra arquitectura (RestTemplate, OpenFeign, Filtros, etc...)
+
+* `traceId` y `spanId`: Unidad básica de trazabilidad, llamada a un servicio.
+* `cs`: *Client Sent*, el cilente ha enviado una petición.
+* `sr`: *Server Received*, el servidor ha recibido la petición
+* `ss`: *Server Sent*, envio de la respuesta
+* `cr`: *Client Received*, el cliente recibió la respusta
+
+![Sleuth](/readme-sources/sleuth.jpeg?raw=true "Sleuth")
+
+El segundo de los retos es tener un agregado con todos los log de una petición. Por ejemplo, cuando se invoque a `http://{{host}}/organization/{orgId}/with-departments-and-employees`, se desencadenan
+de trazabilidad distribuida que permite, a partir de un identificador de traza en un log, monitorizar todas las subpeticiones asociadas.
+llamadas internas a todos los microservicios, ante un error nos interesa el agregado de las llamadas. Esto es posible lograrlo con [Zipkin](https://zipkin.io/). [Zipkin](https://zipkin.io/) es un sistema
+
+En este ejemplo se configura un [Zipkin](https://zipkin.io/) en memoria, `Dockerfile` y descriptor Kubernetes se encuentra en el repositorio.  
 
 ### Tolerancia a fallos y resiliencia.
 TODO Hystryx +  Actuator
-
-
 
 
 ## Comandos útiles & Recetas Kubernetes
@@ -115,18 +131,52 @@ TODO Hystryx +  Actuator
 
 * Crear `ConfigMap` desde fichero: `kubectl create configmap {nombre} -n {namespace} --from-file={file}.yml`
 
+* Rolebinding: `kubectl create rolebinding default:service-discovery-client --clusterrole service-discovery-client --serviceaccount <namespace>:<service account name>`
+
+kubectl create rolebinding microservicios-vfnpoc:service-discovery-client --clusterrole service-discovery-client --serviceaccount microservicios-vfnpoc:default
+
+## Conceptos K8s
+
+* `Service` vs `Deployment`: Un servicio crea acceso de red a un conjunto de pods en kubernetes.
+Un despliegue es el responsable de mantener un número de pods correctos para un servicio.
+
+* `DaemonSet`: Un DaemonSet asegura que todos o algunos (consultar definición) nodos del Namespace están corriendo una copia del Pod.
+Cuando los nodos se añaden al Cluster, los pods son también añadidos. Cuando estos nodos son borrados, los nodos son borrados también. 
+Borrar un DaemonSet limpiará los Pods que creó. Usos habituales de los DaemonSet es el correr imágenes concretas para recabar logs../
+
+* `ClusterRoles`: Definen los accesos de un usuario a los recursos del cluster. Spring Cloud Kubernetes (en la versión usada) requiere
+acceso a services, pods, config maps, endpoints. Los ClusterRoles van asociados a una cuenta, siendo necesario para ello hacer un 
+Rolebinding (ver bibliografía, enlaces 15, 16)
+
+* `Stateful`: Como en cualquier sistema distribuido, nos referimos a servicios con estado; cuyos datos deben mantenerse en el tiempo. 
+Sin entrar en mucho detalle Kubernetes maneja tres objetos principales para esto:
+    * [`Persistent Volumes (PV)`](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)`: Se configuran por el administrador del cluster y
+    están disponibles para los usuarios y computación. Los volumeness son manejasod spor plugins (NFS, iSCSI o plugins de cloud providers)
+    
+    * [`PersistentVolumeClaims (PVC)`](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)`: Usuario requiere
+    un recurso persistente.
+    
+    * [`Storage Classes`](https://kubernetes.io/docs/concepts/storage/storage-classes/)`: Las clases de almacentamiento dinámico se utilizan para crear
+    PV dinámicos. Si no hay un volumen que asista a un PVC, K8S provisionará un volumen usando las clases de almacenamiento.
+    
+
 ## Bibliografía
 
-* [https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin](https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin)
-* [https://github.com/spring-cloud/spring-cloud-kubernetes](https://github.com/spring-cloud/spring-cloud-kubernetes)
-* [https://www.baeldung.com/spring-cloud-openfeign](https://www.baeldung.com/spring-cloud-openfeign)
-* [https://spring.io/projects/spring-cloud-openfeign](https://spring.io/projects/spring-cloud-openfeign)
-* [https://matthewpalmer.net/kubernetes-app-developer/articles/service-kubernetes-example-tutorial.html#:~:text=What's%20the%20difference%20between%20a,running%20in%20the%20Kubernetes%20cluster.](https://matthewpalmer.net/kubernetes-app-developer/articles/service-kubernetes-example-tutorial.html#:~:text=What's%20the%20difference%20between%20a,running%20in%20the%20Kubernetes%20cluster.)
-* [https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0](https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0)
-* [https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/](https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/)
-* [https://www.baeldung.com/spring-cloud-kubernetes](https://www.baeldung.com/spring-cloud-kubernetes)
-* [https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/](https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/)
-* [https://learnk8s.io/kubernetes-ingress-api-gateway](https://learnk8s.io/kubernetes-ingress-api-gateway)
-* [https://developers.redhat.com/blog/2017/10/03/configuring-spring-boot-kubernetes-configmap/](https://developers.redhat.com/blog/2017/10/03/configuring-spring-boot-kubernetes-configmap/)
-* [https://github.com/varghgeorge/microservices-single-swagger](https://github.com/varghgeorge/microservices-single-swagger)
-* [https://walkingtreetech.medium.com/logs-monitoring-in-microservices-using-elk-316bf9c049c4](https://walkingtreetech.medium.com/logs-monitoring-in-microservices-using-elk-316bf9c049c4)
+1. [https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin](https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin)
+2. [https://github.com/spring-cloud/spring-cloud-kubernetes](https://github.com/spring-cloud/spring-cloud-kubernetes)
+3. [https://www.baeldung.com/spring-cloud-openfeign](https://www.baeldung.com/spring-cloud-openfeign)
+4. [https://spring.io/projects/spring-cloud-openfeign](https://spring.io/projects/spring-cloud-openfeign)
+5. [https://matthewpalmer.net/kubernetes-app-developer/articles/service-kubernetes-example-tutorial.html#:~:text=What's%20the%20difference%20between%20a,running%20in%20the%20Kubernetes%20cluster.](https://matthewpalmer.net/kubernetes-app-developer/articles/service-kubernetes-example-tutorial.html#:~:text=What's%20the%20difference%20between%20a,running%20in%20the%20Kubernetes%20cluster.)
+6. [https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0](https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0)
+7. [https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/](https://piotrminkowski.com/2020/02/20/microservices-api-documentation-with-springdoc-openapi/)
+8. [https://www.baeldung.com/spring-cloud-kubernetes](https://www.baeldung.com/spring-cloud-kubernetes)
+9. [https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/](https://www.paradigmadigital.com/dev/microservicios-2-0-spring-cloud-netflix-vs-kubernetes-istio/)
+10. [https://learnk8s.io/kubernetes-ingress-api-gateway](https://learnk8s.io/kubernetes-ingress-api-gateway)
+11. [https://developers.redhat.com/blog/2017/10/03/configuring-spring-boot-kubernetes-configmap/](https://developers.redhat.com/blog/2017/10/03/configuring-spring-boot-kubernetes-configmap/)
+12. [https://github.com/varghgeorge/microservices-single-swagger](https://github.com/varghgeorge/microservices-single-swagger)
+13. [https://walkingtreetech.medium.com/logs-monitoring-in-microservices-using-elk-316bf9c049c4](https://walkingtreetech.medium.com/logs-monitoring-in-microservices-using-elk-316bf9c049c4)
+14. [https://www.paradigmadigital.com/dev/trazabilidad-distribuida-spring-cloud-sleuth-zipkin/](https://www.paradigmadigital.com/dev/trazabilidad-distribuida-spring-cloud-sleuth-zipkin/)
+15. [https://medium.com/@nieldw/rbac-and-spring-cloud-kubernetes-847dd0f245e4](https://medium.com/@nieldw/rbac-and-spring-cloud-kubernetes-847dd0f245e4)
+16. [https://medium.com/@HoussemDellai/rbac-with-kubernetes-in-minikube-4deed658ea7b](https://medium.com/@HoussemDellai/rbac-with-kubernetes-in-minikube-4deed658ea7b)
+17. [https://spot.io/blog/kubernetes-tutorial-successful-deployment-of-elasticsearch/](https://spot.io/blog/kubernetes-tutorial-successful-deployment-of-elasticsearch/)
+18. [https://medium.com/swlh/distributed-tracing-in-micoservices-using-spring-zipkin-sleuth-and-elk-stack-5665c5fbecf](https://medium.com/swlh/distributed-tracing-in-micoservices-using-spring-zipkin-sleuth-and-elk-stack-5665c5fbecf)

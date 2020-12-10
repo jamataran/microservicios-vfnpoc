@@ -30,8 +30,8 @@ public class DepartmentController {
 
 	@GetMapping("/feign")
 	public List<Employee> listRest() {
-		return employeeClient.findByDepartment("1");
-	}
+        return getEmployeesByDepartment("1");
+    }
 
 	@PostMapping("/")
 	public Department add(@RequestBody Department department) {
@@ -44,34 +44,47 @@ public class DepartmentController {
 		if (CHAOS_CONSTANT.equalsIgnoreCase(id))
 			shutDown();
 
-		LOGGER.info("Department find: id={}", id);
-		return repository.findById(id).get();
-	}
+        LOGGER.info("Department find: id={}", id);
+        return repository.findById(id).get();
+    }
 
-	@GetMapping("/")
-	public Iterable<Department> findAll() {
-		LOGGER.info("Department find");
-		return repository.findAll();
-	}
+    @GetMapping("/")
+    public Iterable<Department> findAll() {
+        LOGGER.info("Department find");
+        return repository.findAll();
+    }
 
-	@GetMapping("/organization/{organizationId}")
-	public List<Department> findByOrganization(@PathVariable("organizationId") Long organizationId) {
-		LOGGER.info("Department find: organizationId={}", organizationId);
-		return repository.findByOrganizationId(organizationId);
-	}
+    @GetMapping("/organization/{organizationId}")
+    public List<Department> findByOrganization(@PathVariable("organizationId") String organizationId) {
+        LOGGER.info("Department find: organizationId={}", organizationId);
+        return repository.findByOrganizationId(organizationId);
+    }
 
-	@GetMapping("/organization/{organizationId}/with-employees")
-	public List<Department> findByOrganizationWithEmployees(@PathVariable("organizationId") Long organizationId) {
-		LOGGER.info("Department find: organizationId={}", organizationId);
-		List<Department> departments = repository.findByOrganizationId(organizationId);
-		departments.forEach(d -> d.setEmployees(employeeClient.findByDepartment(d.getId())));
-		return departments;
-	}
+    @GetMapping("/organization/{organizationId}/with-employees")
+    public List<Department> findByOrganizationWithEmployees(@PathVariable("organizationId") String organizationId) {
+        LOGGER.info("Buscando departamento de organización con empleados. Organization id: {}", organizationId);
 
-	private void shutDown() throws IOException {
-		Runtime runtime = Runtime.getRuntime();
-		Process proc = runtime.exec("poweroff");
-		System.exit(0);
-	}
+        List<Department> departments = repository.findByOrganizationId(organizationId);
+        LOGGER.info("Departamentos encontrados: {}", organizationId);
+
+
+        departments.forEach(d -> d.setEmployees(getEmployeesByDepartment(d.getId())));
+        return departments;
+    }
+
+    private List<Employee> getEmployeesByDepartment(String id) {
+        LOGGER.info("Buscando empleados por departamento, con id {}", id);
+
+        final List<Employee> byDepartment = employeeClient.findByDepartment(id);
+        LOGGER.info("Se encontraron empleados para el departamento {}:{}", id, byDepartment);
+
+        return byDepartment;
+    }
+
+    private void shutDown() throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        Process proc = runtime.exec("poweroff");
+        System.exit(0);
+    }
 
 }

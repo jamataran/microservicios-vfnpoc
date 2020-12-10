@@ -10,46 +10,46 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "department")
 public class Department {
 
-	@Id
-	private String id;
-	private Long organizationId;
-	private String name;
-	@Transient
-	private List<Employee> employees = new ArrayList<>();
+    @Id
+    private String id;
+    private String organizationId;
+    private String name;
+    @Transient
+    private List<Employee> employees = new ArrayList<>();
 
-	public Department() {
+    public Department() {
 
-	}
+    }
 
-	public Department(Long organizationId, String name) {
-		super();
-		this.organizationId = organizationId;
-		this.name = name;
-	}
+    public Department(String organizationId, String name) {
+        super();
+        this.organizationId = organizationId;
+        this.name = name;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public Long getOrganizationId() {
-		return organizationId;
-	}
+    public String getOrganizationId() {
+        return organizationId;
+    }
 
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
-	}
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
 	public List<Employee> getEmployees() {
 		return employees;

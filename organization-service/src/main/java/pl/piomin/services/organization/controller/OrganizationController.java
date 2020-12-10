@@ -1,6 +1,7 @@
 package pl.piomin.services.organization.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pl.piomin.services.organization.client.DepartmentClient;
 import pl.piomin.services.organization.client.EmployeeClient;
+import pl.piomin.services.organization.model.Department;
 import pl.piomin.services.organization.model.Organization;
 import pl.piomin.services.organization.repository.OrganizationRepository;
 
@@ -66,13 +68,25 @@ public class OrganizationController {
 
     @GetMapping("/{id}/with-departments-and-employees")
     public Organization findByIdWithDepartmentsAndEmployees(@PathVariable("id") String id) {
-        LOGGER.info("Organization find: id={}", id);
+        LOGGER.info("Busqueda completa de Organización {}", id);
+
+        // Repo find
         Optional<Organization> organization = repository.findById(id);
+        LOGGER.info("Busqueda finalizada en repo: {}", organization);
+
+
         if (organization.isPresent()) {
             Organization o = organization.get();
-            o.setDepartments(departmentClient.findByOrganizationWithEmployees(o.getId()));
+
+            // Department
+            LOGGER.info("Buscando departamento con empleados");
+            final List<Department> byOrganizationWithEmployees = departmentClient.findByOrganizationWithEmployees(o.getId());
+            LOGGER.info("Búsqueda departamento con empleados. Resultado: {}", byOrganizationWithEmployees);
+
+            o.setDepartments(byOrganizationWithEmployees);
             return o;
         } else {
+            LOGGER.error("No se encontró la organizacion en el repositorio.");
             return null;
         }
     }
