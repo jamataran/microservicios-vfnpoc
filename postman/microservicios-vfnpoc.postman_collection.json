@@ -1,217 +1,460 @@
 {
   "info": {
-    "_postman_id": "a164972a-902e-4ec0-b629-e2aeeb7ed259",
-    "name": "microservicios-vfnpoc",
-    "description": "Peticiones tipo para el entorno",
+    "_postman_id": "e2d7a4c7-9f55-467e-9fb3-9b6818d887f0",
+    "name": "EVOLUTIO - REMEDY [onbmc.com]",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "organization",
-      "item": [
+      "name": "Get Token",
+      "event": [
         {
-          "name": "add",
-          "request": {
+          "listen": "test",
+          "script": {
+            "id": "dbc0023a-1efa-4374-b998-1c3f26f19fe4",
+            "exec": [
+              "var jsonData = (responseBody);\r",
+              "postman.setEnvironmentVariable(\"jwt\", jsonData);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "username",
+              "value": "{{username}}",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "{{password}}",
+              "type": "text"
+            }
+          ],
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/jwt/login",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "jwt",
+            "login"
+          ]
+        },
+        "description": "Genera un token para usarlo como autenticacion en el resto de llamadas"
+      },
+      "response": [
+        {
+          "name": "Get Token Reponse (DEV)",
+          "originalRequest": {
             "method": "POST",
             "header": [],
             "body": {
-              "mode": "raw",
-              "raw": "{\n    \"name\":\"Empresa Pruebas {{$randomInt}}\",\n    \"address\": \"Calle María de Portugal, nº {{$randomInt}}. 28032. Madrid\"\n}",
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{username}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                }
+              ],
               "options": {
                 "raw": {
-                  "language": "json"
+                  "language": "text"
                 }
               }
             },
             "url": {
-              "raw": "{{lb_host}}/organization",
+              "raw": "{{host}}/api/jwt/login",
               "host": [
-                "{{lb_host}}"
+                "{{host}}"
               ],
               "path": [
-                "organization"
+                "api",
+                "jwt",
+                "login"
               ]
             }
           },
-          "response": []
-        },
-        {
-          "name": "findAll",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{lb_host}}/organization",
-              "host": [
-                "{{lb_host}}"
-              ],
-              "path": [
-                "organization"
-              ]
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "plain",
+          "header": [
+            {
+              "key": "Date",
+              "value": "Tue, 13 Oct 2020 10:30:21 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Content-Security-Policy",
+              "value": "frame-ancestors 'self'"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "1; mode=block"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "gzip"
             }
-          },
-          "response": []
-        },
-        {
-          "name": "findById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{lb_host}}/organization/5fb4e9462af56e0f965720db",
-              "host": [
-                "{{lb_host}}"
-              ],
-              "path": [
-                "organization",
-                "5fb4e9462af56e0f965720db"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "💣DOWN",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{lb_host}}/organization/110589",
-              "host": [
-                "{{lb_host}}"
-              ],
-              "path": [
-                "organization",
-                "110589"
-              ]
-            }
-          },
-          "response": []
+          ],
+          "cookie": [],
+          "body": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBWThIb1wvaTRyemVhbm02NHI2elU0WDBsYnVhUWxxSHVJd1Jvb3JTd0NaVGtDNitnYjczWFQ1RFllcG51QWpFZjZ4dTVLR3VGNlcxXC80ZTZhZ1lRdzdRUEM1eFdwR1p1R0lVVHVEZDlkVHJvVjJad1dtSHNmaGc9PSIsIm5iZiI6MTYwMjU4NDkwMSwiaXNzIjoicGxhdGZvcm0taW50LTAucGxhdGZvcm0taW50IiwiZXhwIjoxNjAyNTg4NjIxLCJfY2FjaGVJZCI6MjAxMDY1LCJpYXQiOjE2MDI1ODUwMjEsImp0aSI6IklER0JURklOQTgwNlhBUThFWThMUTdHTVlZVEJPViJ9.mQfUSvhXN25gOBxo6BnHmx_Ql2OdrTHO988Aq3VYrE4"
         }
-      ],
-      "protocolProfileBehavior": {}
+      ]
     },
     {
-      "name": "employee",
-      "item": [
+      "name": "Get Token Copy",
+      "event": [
         {
-          "name": "add",
-          "request": {
+          "listen": "test",
+          "script": {
+            "id": "f3e4a724-49f9-41a6-8744-85b64d6a57ac",
+            "exec": [
+              "var jsonData = (responseBody);\r",
+              "postman.setEnvironmentVariable(\"jwt\", jsonData);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "username",
+              "value": "{{username}}",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "{{password}}",
+              "type": "text"
+            }
+          ],
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/jwt/login",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "jwt",
+            "login"
+          ]
+        },
+        "description": "Genera un token para usarlo como autenticacion en el resto de llamadas"
+      },
+      "response": [
+        {
+          "name": "Get Token Reponse (DEV)",
+          "originalRequest": {
             "method": "POST",
             "header": [],
             "body": {
-              "mode": "raw",
-              "raw": "{\n    \"name\": \"Luis Mateos Díaz {{$randomInt}}\",\n    \"age\": 46,\n    \"position\": \"IT Consultant\"\n}",
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "{{username}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                }
+              ],
               "options": {
                 "raw": {
-                  "language": "json"
+                  "language": "text"
                 }
               }
             },
             "url": {
-              "raw": "{{lb_host}}/employee/",
+              "raw": "{{host}}/api/jwt/login",
               "host": [
-                "{{lb_host}}"
+                "{{host}}"
               ],
               "path": [
-                "employee",
-                ""
+                "api",
+                "jwt",
+                "login"
               ]
             }
           },
-          "response": []
-        },
-        {
-          "name": "findById",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"organizationId\": \"5fb4e1d02af56e0f965720da\",\n    \"name\": \"Luis Fernández Díaz\",\n    \"age\": 46,\n    \"position\": \"IT Consultant\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "plain",
+          "header": [
+            {
+              "key": "Date",
+              "value": "Tue, 13 Oct 2020 10:30:21 GMT"
             },
-            "url": {
-              "raw": "{{lb_host}}/employee/11",
-              "host": [
-                "{{lb_host}}"
-              ],
-              "path": [
-                "employee",
-                "11"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "findAll",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{lb_host}}/employee",
-              "host": [
-                "{{lb_host}}"
-              ],
-              "path": [
-                "employee"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "💣 DOWN",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"organizationId\": \"5fb4e1d02af56e0f965720da\",\n    \"name\": \"Luis Fernández Díaz\",\n    \"age\": 46,\n    \"position\": \"IT Consultant\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
             },
-            "url": {
-              "raw": "{{lb_host}}/employee/110589",
-              "host": [
-                "{{lb_host}}"
-              ],
-              "path": [
-                "employee",
-                "110589"
-              ]
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Vary",
+              "value": "Accept-Encoding"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Content-Security-Policy",
+              "value": "frame-ancestors 'self'"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "1; mode=block"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "gzip"
             }
-          },
-          "response": []
+          ],
+          "cookie": [],
+          "body": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBWThIb1wvaTRyemVhbm02NHI2elU0WDBsYnVhUWxxSHVJd1Jvb3JTd0NaVGtDNitnYjczWFQ1RFllcG51QWpFZjZ4dTVLR3VGNlcxXC80ZTZhZ1lRdzdRUEM1eFdwR1p1R0lVVHVEZDlkVHJvVjJad1dtSHNmaGc9PSIsIm5iZiI6MTYwMjU4NDkwMSwiaXNzIjoicGxhdGZvcm0taW50LTAucGxhdGZvcm0taW50IiwiZXhwIjoxNjAyNTg4NjIxLCJfY2FjaGVJZCI6MjAxMDY1LCJpYXQiOjE2MDI1ODUwMjEsImp0aSI6IklER0JURklOQTgwNlhBUThFWThMUTdHTVlZVEJPViJ9.mQfUSvhXN25gOBxo6BnHmx_Ql2OdrTHO988Aq3VYrE4"
         }
-      ],
-      "protocolProfileBehavior": {}
+      ]
     },
     {
-      "name": "department",
-      "item": [
+      "name": "GET Registro por idNumberCaso",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "AR-JWT {{jwt}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL?q='idNumberCaso'=\"12345\"",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "arsys",
+            "v1",
+            "entry",
+            "BTE:PIPRL:RegistroPI_PRL"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "'idNumberCaso'=\"12345\""
+            }
+          ]
+        },
+        "description": "Realiza una consulta sobre el formulario BTE:IPPRL:RegistroP_PRL, que es el formulario que se va a usar de interfaz con clarify, aqui van a estar los datos que se envian a Clarify y los que se reciben.\r\nPara este caso, devuelve todos los campos de la interfaz cuando buscamos por idNumberCaso = \"12345\""
+      },
+      "response": []
+    },
+    {
+      "name": "GET campos por idNumberCaso",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "AR-JWT {{jwt}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL?q='idNumberCaso'=\"12345\"&fields=values(idNumbersSubcasoPI,idNumbersSubcasoPRL,Request ID)",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "arsys",
+            "v1",
+            "entry",
+            "BTE:PIPRL:RegistroPI_PRL"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "'idNumberCaso'=\"12345\""
+            },
+            {
+              "key": "fields",
+              "value": "values(idNumbersSubcasoPI,idNumbersSubcasoPRL,Request ID)"
+            }
+          ]
+        },
+        "description": "Este caso es igual que el anterior, pero solo devuelve 3 campos en vez de todos: idNumbersSubcasoPI, idNumbersSubcasoPRL y Request ID. Este último pertenece a Remedy, y es necesario obtenerlo para después actualizar el registro en base a él"
+      },
+      "response": []
+    },
+    {
+      "name": "PUT registro por Request Id",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "AR-JWT {{jwt}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"values\": {\r\n            \"DescripcionClarifyTPM\": \"Actualización de prueba\"\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL/000000000000001",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "arsys",
+            "v1",
+            "entry",
+            "BTE:PIPRL:RegistroPI_PRL",
+            "000000000000001"
+          ]
+        },
+        "description": "Con esta llamada actualizamos el campo DescripcionClarifyTPM del registro que tiene idNumberCaso = \"12345\", pero lo hacemos a través de su campo Request ID que hemos obtenido en una llamada GET anterior"
+      },
+      "response": []
+    },
+    {
+      "name": "/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "AR-JWT {{jwt}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"values\": {\r\n            \"Direccion\": \"Incoming\",\r\n            \"idCasoExterno\": \"110589\",\r\n            \"idNumbersSubcasoPI\": \"110589001\",\r\n            \"idNumbersSubcasoPRL\": null,\r\n            \"DescripcionClarifyTPM\": \"Ejemplo de descripción\"\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "arsys",
+            "v1",
+            "entry",
+            "BTE:PIPRL:RegistroPI_PRL_WS"
+          ]
+        },
+        "description": "Con esta llamada actualizamos el campo DescripcionClarifyTPM del registro que tiene idNumberCaso = \"12345\", pero lo hacemos a través de su campo Request ID que hemos obtenido en una llamada GET anterior"
+      },
+      "response": [
         {
-          "name": "add",
-          "request": {
+          "name": "/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL",
+          "originalRequest": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "AR-JWT {{jwt}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"organizationId\": \"5fb4e11b2af56e0f965720d9\",\n    \"name\": \"Departamento 1\",\n    \"employees\": {}\n}",
+              "raw": "{\r\n    \"values\": {\r\n            \"Direccion\": \"Incoming\",\r\n            \"idCasoExterno\": \"110589\",\r\n            \"idNumbersSubcasoPI\": \"110589001\",\r\n            \"idNumbersSubcasoPRL\": null,\r\n            \"DescripcionClarifyTPM\": \"Ejemplo de descripción\"\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -219,29 +462,93 @@
               }
             },
             "url": {
-              "raw": "{{lb_host}}/department/",
+              "raw": "{{host}}/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS",
               "host": [
-                "{{lb_host}}"
+                "{{host}}"
               ],
               "path": [
-                "department",
-                ""
+                "api",
+                "arsys",
+                "v1",
+                "entry",
+                "BTE:PIPRL:RegistroPI_PRL_WS"
               ]
             }
           },
-          "response": []
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "plain",
+          "header": [
+            {
+              "key": "Date",
+              "value": "Tue, 13 Oct 2020 10:30:40 GMT"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Content-Security-Policy",
+              "value": "frame-ancestors 'self'"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "1; mode=block"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "_cacheId=201065"
+            },
+            {
+              "key": "Expires",
+              "value": "Thu, 01 Jan 1970 00:00:00 GMT"
+            },
+            {
+              "key": "Location",
+              "value": "https://btespana-dev-restapi.onbmc.com/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS/000000000000105"
+            },
+            {
+              "key": "Status",
+              "value": "200"
+            },
+            {
+              "key": "X-AR-TR-Core-Id",
+              "value": "g1N3U6wKS6GKT3UCe6nG3g"
+            },
+            {
+              "key": "X-AR-TR-Counter",
+              "value": "1"
+            }
+          ],
+          "cookie": [],
+          "body": null
         },
         {
-          "name": "findById",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
+          "name": "/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "AR-JWT {{jwt}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"organizationId\":\"5fb4e11b2af56e0f965720d9\",\n    \"name\": \"Departamento 1\"\n}",
+              "raw": "{\r\n    \"values\": {\r\n            \"Direccion\": \"Incoming\",\r\n            \"idCasoExterno\": \"110589\",\r\n            \"idNumbersSubcasoPI\": \"110589001\",\r\n            \"idNumbersSubcasoPRL\": null,\r\n            \"DescripcionClarifyTPM\": \"Ejemplo de descripción\"\r\n    }\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -249,57 +556,337 @@
               }
             },
             "url": {
-              "raw": "{{lb_host}}/department/1105",
+              "raw": "{{host}}/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS",
               "host": [
-                "{{lb_host}}"
+                "{{host}}"
               ],
               "path": [
-                "department",
-                "1105"
+                "api",
+                "arsys",
+                "v1",
+                "entry",
+                "BTE:PIPRL:RegistroPI_PRL_WS"
               ]
             }
           },
-          "response": []
-        },
-        {
-          "name": "💣DOWN",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"organizationId\":\"5fb4e11b2af56e0f965720d9\",\n    \"name\": \"Departamento 1\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "html",
+          "header": [
+            {
+              "key": "Date",
+              "value": "Tue, 13 Oct 2020 11:22:38 GMT"
             },
-            "url": {
-              "raw": "{{lb_host}}/department/110589",
-              "host": [
-                "{{lb_host}}"
-              ],
-              "path": [
-                "department",
-                "110589"
-              ]
+            {
+              "key": "Content-Type",
+              "value": "text/html"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "route=433e9e399d91d4093fdd4df96abcc419550306cb; Domain=btespana-dev-restapi.onbmc.com; Path=/; HttpOnly"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "_cacheId=201065"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "onbmc_pool=!/D7cEYI2ooz56bKs9FWGKl+yZvBvEGtMjV9OtuXvm1O8X7Ve0wLDL/MJTNc3FNwXiXzUFKGPQ3OuTkA=; path=/; Httponly; Secure"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Content-Security-Policy",
+              "value": "frame-ancestors 'self'"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "1; mode=block"
+            },
+            {
+              "key": "Expires",
+              "value": "Thu, 01 Jan 1970 00:00:00 GMT"
+            },
+            {
+              "key": "Location",
+              "value": "https://btespana-dev-restapi.onbmc.com/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS/000000000000106"
+            },
+            {
+              "key": "Status",
+              "value": "200"
+            },
+            {
+              "key": "X-AR-TR-Core-Id",
+              "value": "zLwyNq5_SjKZDPXe6ONg4Q"
+            },
+            {
+              "key": "X-AR-TR-Counter",
+              "value": "1"
             }
-          },
-          "response": []
+          ],
+          "cookie": [],
+          "body": null
         }
-      ],
-      "protocolProfileBehavior": {}
+      ]
+    },
+    {
+      "name": "/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL Copy",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "AR-JWT {{jwt}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"values\": {\r\n            \"Direccion\": \"Incoming\",\r\n            \"idCasoExterno\": \"110589\",\r\n            \"idNumbersSubcasoPI\": \"110589001\",\r\n            \"idNumbersSubcasoPRL\": null,\r\n            \"DescripcionClarifyTPM\": \"Ejemplo de descripción\"\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "arsys",
+            "v1",
+            "entry",
+            "BTE:PIPRL:RegistroPI_PRL_WS"
+          ]
+        },
+        "description": "Con esta llamada actualizamos el campo DescripcionClarifyTPM del registro que tiene idNumberCaso = \"12345\", pero lo hacemos a través de su campo Request ID que hemos obtenido en una llamada GET anterior"
+      },
+      "response": [
+        {
+          "name": "/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "AR-JWT {{jwt}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"values\": {\r\n            \"Direccion\": \"Incoming\",\r\n            \"idCasoExterno\": \"110589\",\r\n            \"idNumbersSubcasoPI\": \"110589001\",\r\n            \"idNumbersSubcasoPRL\": null,\r\n            \"DescripcionClarifyTPM\": \"Ejemplo de descripción\"\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "arsys",
+                "v1",
+                "entry",
+                "BTE:PIPRL:RegistroPI_PRL_WS"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "plain",
+          "header": [
+            {
+              "key": "Date",
+              "value": "Tue, 13 Oct 2020 10:30:40 GMT"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Content-Security-Policy",
+              "value": "frame-ancestors 'self'"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "1; mode=block"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "_cacheId=201065"
+            },
+            {
+              "key": "Expires",
+              "value": "Thu, 01 Jan 1970 00:00:00 GMT"
+            },
+            {
+              "key": "Location",
+              "value": "https://btespana-dev-restapi.onbmc.com/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS/000000000000105"
+            },
+            {
+              "key": "Status",
+              "value": "200"
+            },
+            {
+              "key": "X-AR-TR-Core-Id",
+              "value": "g1N3U6wKS6GKT3UCe6nG3g"
+            },
+            {
+              "key": "X-AR-TR-Counter",
+              "value": "1"
+            }
+          ],
+          "cookie": [],
+          "body": null
+        },
+        {
+          "name": "/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "AR-JWT {{jwt}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"values\": {\r\n            \"Direccion\": \"Incoming\",\r\n            \"idCasoExterno\": \"110589\",\r\n            \"idNumbersSubcasoPI\": \"110589001\",\r\n            \"idNumbersSubcasoPRL\": null,\r\n            \"DescripcionClarifyTPM\": \"Ejemplo de descripción\"\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "arsys",
+                "v1",
+                "entry",
+                "BTE:PIPRL:RegistroPI_PRL_WS"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "html",
+          "header": [
+            {
+              "key": "Date",
+              "value": "Tue, 13 Oct 2020 11:22:38 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "text/html"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "route=433e9e399d91d4093fdd4df96abcc419550306cb; Domain=btespana-dev-restapi.onbmc.com; Path=/; HttpOnly"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "_cacheId=201065"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "onbmc_pool=!/D7cEYI2ooz56bKs9FWGKl+yZvBvEGtMjV9OtuXvm1O8X7Ve0wLDL/MJTNc3FNwXiXzUFKGPQ3OuTkA=; path=/; Httponly; Secure"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Content-Security-Policy",
+              "value": "frame-ancestors 'self'"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "1; mode=block"
+            },
+            {
+              "key": "Expires",
+              "value": "Thu, 01 Jan 1970 00:00:00 GMT"
+            },
+            {
+              "key": "Location",
+              "value": "https://btespana-dev-restapi.onbmc.com/api/arsys/v1/entry/BTE:PIPRL:RegistroPI_PRL_WS/000000000000106"
+            },
+            {
+              "key": "Status",
+              "value": "200"
+            },
+            {
+              "key": "X-AR-TR-Core-Id",
+              "value": "zLwyNq5_SjKZDPXe6ONg4Q"
+            },
+            {
+              "key": "X-AR-TR-Counter",
+              "value": "1"
+            }
+          ],
+          "cookie": [],
+          "body": null
+        }
+      ]
     }
   ],
   "event": [
     {
       "listen": "prerequest",
       "script": {
-        "id": "6458a4ce-b68a-49c1-b7a4-e0663099373b",
+        "id": "0922f23a-d929-4c7a-8ac3-fd3d7c2e1305",
         "type": "text/javascript",
         "exec": [
           ""
@@ -309,19 +896,12 @@
     {
       "listen": "test",
       "script": {
-        "id": "6d593be1-ecaf-441b-b647-004530935021",
+        "id": "0a06afc7-ef83-4d28-b01c-2182e0bcc3d5",
         "type": "text/javascript",
         "exec": [
           ""
         ]
       }
-    }
-  ],
-  "variable": [
-    {
-      "id": "2297cf22-27db-4ddb-afb3-54518dedc5e4",
-      "key": "lb_host",
-      "value": "http://192.168.64.3"
     }
   ],
   "protocolProfileBehavior": {}
